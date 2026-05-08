@@ -2,50 +2,82 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+  // LOGIN
+  const [usuario, setUsuario] = useState("");
+  const [senha, setSenha] = useState("");
+  const [logado, setLogado] = useState(false);
 
+  // ALUNOS
   const [alunos, setAlunos] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
 
-  // CARREGA O CSV
+  // CARREGAR CSV
   useEffect(() => {
-
     fetch("/alunos.csv")
-      .then(response => response.text())
-      .then(texto => {
+      .then((response) => response.text())
+      .then((texto) => {
+        const linhas = texto.split("\n").slice(1);
 
-        const linhas = texto.split("\n");
-
-        // Remove cabeçalho
-        linhas.shift();
-
-        const listaAlunos = linhas
-          .filter(linha => linha.trim() !== "")
-          .map(linha => {
-
-            const dados = linha.split(",");
+        const dados = linhas
+          .filter((linha) => linha.trim() !== "")
+          .map((linha) => {
+            const [nome, rm, codigo] = linha.split(",");
 
             return {
-              nome: dados[0]?.trim(),
-              rm: dados[1]?.trim(),
-              codigo: dados[2]?.trim()
+              nome: nome?.trim(),
+              rm: rm?.trim(),
+              codigo: codigo?.trim(),
             };
           });
 
-        setAlunos(listaAlunos);
+        setAlunos(dados);
       });
-
   }, []);
 
-  // PESQUISA
-  const resultados = alunos.filter(aluno =>
-    aluno.nome?.toLowerCase().includes(
-      pesquisa.toLowerCase()
-    )
+  // FILTRO DE PESQUISA
+  const alunosFiltrados = alunos.filter((aluno) =>
+    aluno.nome.toLowerCase().includes(pesquisa.toLowerCase())
   );
 
+  // LOGIN
+  function fazerLogin() {
+    if (usuario === "admin" && senha === "123456") {
+      setLogado(true);
+    } else {
+      alert("Usuário ou senha incorretos");
+    }
+  }
+
+  // TELA DE LOGIN
+  if (!logado) {
+    return (
+      <div className="login-container">
+        <div className="login-box">
+          <h1>Sistema Escolar</h1>
+
+          <input
+            type="text"
+            placeholder="Usuário"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+
+          <button onClick={fazerLogin}>Entrar</button>
+        </div>
+      </div>
+    );
+  }
+
+  // SISTEMA
   return (
     <div className="container">
-
       <h1>Sistema Escolar</h1>
 
       <input
@@ -55,43 +87,27 @@ function App() {
         onChange={(e) => setPesquisa(e.target.value)}
       />
 
-      <div className="resultados">
+      <div className="lista-alunos">
+        {alunosFiltrados.length > 0 ? (
+          alunosFiltrados.map((aluno, index) => (
+            <div className="card" key={index}>
+              <p>
+                <strong>Nome:</strong> {aluno.nome}
+              </p>
 
-        {
-          pesquisa !== "" && (
+              <p>
+                <strong>RM:</strong> {aluno.rm}
+              </p>
 
-            resultados.length > 0 ? (
-
-              resultados.map((aluno, index) => (
-
-                <div className="card" key={index}>
-
-                  <p>
-                    <strong>Nome:</strong> {aluno.nome}
-                  </p>
-
-                  <p>
-                    <strong>RM:</strong> {aluno.rm}
-                  </p>
-
-                  <p>
-                    <strong>Código:</strong> {aluno.codigo}
-                  </p>
-
-                </div>
-              ))
-
-            ) : (
-
-              <div className="card">
-                <p>Nenhum aluno encontrado.</p>
-              </div>
-            )
-          )
-        }
-
+              <p>
+                <strong>Código:</strong> {aluno.codigo}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>Nenhum aluno encontrado.</p>
+        )}
       </div>
-
     </div>
   );
 }

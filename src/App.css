@@ -2,67 +2,105 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: #111827;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #081224;
   color: white;
 }
 
-.container {
+/* LOGIN */
+
+.login-container {
   width: 100%;
-  max-width: 700px;
-  margin: auto;
-  padding-top: 60px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-h1 {
+.login-box {
+  width: 350px;
+  background: #111c33;
+  padding: 40px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.login-box h1 {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 42px;
-  color: #60a5fa;
+  color: #4d94ff;
 }
 
-input {
-  width: 100%;
-  padding: 18px;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  outline: none;
-  background: #1f2937;
+.login-box input {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #4d94ff;
+  background: #0b1529;
   color: white;
-  border: 2px solid transparent;
+  font-size: 16px;
+}
+
+.login-box button {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #4d94ff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-input:focus {
-  border: 2px solid #60a5fa;
+.login-box button:hover {
+  background: #2d7cff;
 }
 
-.resultados {
-  margin-top: 30px;
+/* SISTEMA */
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.container h1 {
+  text-align: center;
+  color: #4d94ff;
+  margin-bottom: 30px;
+  font-size: 42px;
+}
+
+.container input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #4d94ff;
+  background: #111c33;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.lista-alunos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .card {
-  background: #1f2937;
+  background: #111c33;
   padding: 25px;
-  border-radius: 14px;
-  margin-bottom: 20px;
-  transition: 0.3s;
-  border-left: 5px solid #60a5fa;
-}
-
-.card:hover {
-  transform: scale(1.02);
+  border-radius: 16px;
+  border-left: 5px solid #4d94ff;
 }
 
 .card p {
   margin-bottom: 10px;
   font-size: 18px;
-}
-
-.card strong {
-  color: #60a5fa;
 }
