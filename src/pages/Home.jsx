@@ -1,92 +1,53 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../supabase'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { supabase } from "../supabase";
 
 function Home() {
-
-  const [alunos, setAlunos] = useState([])
-  const [pesquisa, setPesquisa] = useState('')
+  const [pesquisa, setPesquisa] = useState("");
+  const [alunos, setAlunos] = useState([]);
 
   async function carregarAlunos() {
-
     const { data } = await supabase
-      .from('alunos')
-      .select('*')
-      .order('nome')
+      .from("alunos")
+      .select("*");
 
-    if (data) {
-      setAlunos(data)
-    }
+    setAlunos(data || []);
   }
 
   useEffect(() => {
-    carregarAlunos()
-  }, [])
+    carregarAlunos();
+  }, []);
 
-  const alunosFiltrados = alunos.filter((aluno) => {
-
-    return (
-      aluno.nome
-        .toLowerCase()
-        .includes(
-          pesquisa.toLowerCase()
-        )
-    )
-  })
+  const alunosFiltrados = alunos.filter((aluno) =>
+    aluno.nome.toLowerCase().includes(pesquisa.toLowerCase())
+  );
 
   return (
-    <div className="container">
-
+    <div className="home">
       <div className="topo">
+        <h1>Sistema Escolar</h1>
 
-        <h1>
-          Sistema Escolar
-        </h1>
-
-        <a
-          href="/admin"
-          className="admin-link"
-        >
+        <Link to="/admin" className="btn-admin">
           Área Admin
-        </a>
-
+        </Link>
       </div>
 
       <input
         type="text"
         placeholder="Pesquisar aluno..."
-        value={pesquisa}
-        onChange={(e) =>
-          setPesquisa(e.target.value)
-        }
         className="pesquisa"
+        value={pesquisa}
+        onChange={(e) => setPesquisa(e.target.value)}
       />
 
-      <div className="lista">
-
-        {
-          alunosFiltrados.map((aluno) => (
-
-            <div
-              className="card"
-              key={aluno.id}
-            >
-
-              <h2>
-                {aluno.nome}
-              </h2>
-
-              <p>
-                RM: {aluno.rm}
-              </p>
-
-            </div>
-          ))
-        }
-
-      </div>
-
+      {alunosFiltrados.map((aluno) => (
+        <div className="aluno-box" key={aluno.id}>
+          <h2>{aluno.nome}</h2>
+          <p>RM: {aluno.rm}</p>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

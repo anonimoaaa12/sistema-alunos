@@ -1,0 +1,101 @@
+.admin-page {
+  min-height: 100vh;
+  background: #001133;
+  color: white;
+  padding: 40px;
+}
+
+.admin-title {
+  font-size: 42px;
+  color: #5da2ff;
+  margin-bottom: 30px;
+}
+
+.admin-box {
+  background: #0b1f55;
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 700px;
+}
+
+.admin-box input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.admin-box button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #5da2ff;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.lista {
+  margin-top: 30px;
+}
+
+.aluno-card {
+  background: #142d75;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-delete {
+  background: red;
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login-page {
+  min-height: 100vh;
+  background: #001133;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: #0b1f55;
+  padding: 40px;
+  border-radius: 15px;
+  width: 400px;
+}
+
+.login-box h1 {
+  margin-bottom: 20px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #5da2ff;
+  color: white;
+  font-size: 18px;
+}
