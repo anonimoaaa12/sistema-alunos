@@ -1,101 +1,62 @@
-import { useEffect, useState } from "react";
-import "./App.css";
+import { useEffect, useState } from 'react'
+import './App.css'
+import { supabase } from './supabase'
 
 function App() {
+  const [alunos, setAlunos] = useState([])
+  const [pesquisa, setPesquisa] = useState('')
 
-  // LOGIN
-  const [usuario, setUsuario] = useState("");
-  const [senha, setSenha] = useState("");
-  const [logado, setLogado] = useState(false);
+  const [adminAberto, setAdminAberto] = useState(false)
+  const [senha, setSenha] = useState('')
 
-  // ALUNOS
-  const [alunos, setAlunos] = useState([]);
-  const [pesquisa, setPesquisa] = useState("");
+  const [novoNome, setNovoNome] = useState('')
+  const [novoRM, setNovoRM] = useState('')
 
-  // CARREGA CSV
-  useEffect(() => {
+  async function carregarAlunos() {
+    const { data } = await supabase
+      .from('alunos')
+      .select('*')
 
-    fetch("/alunos.csv")
-      .then((response) => response.text())
-      .then((texto) => {
-
-        const linhas = texto.split("\n").slice(1);
-
-        const dados = linhas
-          .filter((linha) => linha.trim() !== "")
-          .map((linha) => {
-
-            const [nome, rm] = linha.split(",");
-
-            return {
-              nome: nome?.trim(),
-              rm: rm?.trim()
-            };
-          });
-
-        setAlunos(dados);
-      });
-
-  }, []);
-
-  // PESQUISA
-  const alunosFiltrados = alunos.filter((aluno) =>
-    aluno.nome.toLowerCase().includes(
-      pesquisa.toLowerCase()
-    )
-  );
-
-  // LOGIN
-  function fazerLogin() {
-
-    if (usuario === "admin" && senha === "123456") {
-
-      setLogado(true);
-
-    } else {
-
-      alert("Usuário ou senha incorretos");
+    if (data) {
+      setAlunos(data)
     }
   }
 
-  // LOGIN SCREEN
-  if (!logado) {
+  useEffect(() => {
+    carregarAlunos()
+  }, [])
 
-    return (
-      <div className="login-container">
+  async function adicionarAluno() {
+    if (!novoNome || !novoRM) {
+      alert('Preencha tudo')
+      return
+    }
 
-        <div className="login-box">
+    await supabase.from('alunos').insert([
+      {
+        nome: novoNome,
+        rm: novoRM,
+      },
+    ])
 
-          <h1>Sistema Escolar</h1>
+    setNovoNome('')
+    setNovoRM('')
 
-          <input
-            type="text"
-            placeholder="Usuário"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-
-          <button onClick={fazerLogin}>
-            Entrar
-          </button>
-
-        </div>
-
-      </div>
-    );
+    carregarAlunos()
   }
 
-  // SISTEMA
+  async function removerAluno(id) {
+    await supabase.from('alunos').delete().eq('id', id)
+
+    carregarAlunos()
+  }
+
+  const alunosFiltrados = alunos.filter((aluno) =>
+    aluno.nome.toLowerCase().includes(pesquisa.toLowerCase())
+  )
+
   return (
     <div className="container">
-
       <h1>Sistema Escolar</h1>
 
       <input
@@ -105,36 +66,67 @@ function App() {
         onChange={(e) => setPesquisa(e.target.value)}
       />
 
-      <div className="lista-alunos">
+      <div className="lista">
+        {alunosFiltrados.map((aluno) => (
+          <div className="card" key={aluno.id}>
+            <h3>{aluno.nome}</h3>
+            <p>RM: {aluno.rm}</p>
 
-        {
-          alunosFiltrados.length > 0 ? (
-
-            alunosFiltrados.map((aluno, index) => (
-
-              <div className="card" key={index}>
-
-                <p>
-                  <strong>Nome:</strong> {aluno.nome}
-                </p>
-
-                <p>
-                  <strong>RM:</strong> {aluno.rm}
-                </p>
-
-              </div>
-            ))
-
-          ) : (
-
-            <p>Nenhum aluno encontrado.</p>
-          )
-        }
-
+            {adminAberto && (
+              <button onClick={() => removerAluno(aluno.id)}>
+                Remover
+              </button>
+            )}
+          </div>
+        ))}
       </div>
 
+      {!adminAberto ? (
+        <div className="loginAdmin">
+          <input
+            type="password"
+            placeholder="Senha admin"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+
+          <button
+            onClick={() => {
+              if (senha === '1234') {
+                setAdminAberto(true)
+              } else {
+                alert('Senha errada')
+              }
+            }}
+          >
+            Entrar Admin
+          </button>
+        </div>
+      ) : (
+        <div className="admin">
+          <h2>Painel Admin</h2>
+
+          <input
+            type="text"
+            placeholder="Nome do aluno"
+            value={novoNome}
+            onChange={(e) => setNovoNome(e.target.value)}
+          />
+
+          <input
+            type="text"
+            placeholder="RM do aluno"
+            value={novoRM}
+            onChange={(e) => setNovoRM(e.target.value)}
+          />
+
+          <button onClick={adicionarAluno}>
+            Adicionar Aluno
+          </button>
+        </div>
+      )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
