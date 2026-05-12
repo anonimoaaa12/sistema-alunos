@@ -99,3 +99,11 @@
   color: white;
   font-size: 18px;
 }
+.voltar-btn {
+  margin-top: 15px;
+  background-color: #444;
+}
+
+.voltar-btn:hover {
+  background-color: #666;
+}

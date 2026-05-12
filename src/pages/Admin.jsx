@@ -74,7 +74,9 @@ function Admin() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          <button onClick={fazerLogin}>Entrar</button>
+          <button onClick={fazerLogin}>
+            Entrar
+          </button>
         </div>
       </div>
     );
@@ -82,7 +84,9 @@ function Admin() {
 
   return (
     <div className="admin-page">
-      <h1 className="admin-title">Painel Admin</h1>
+      <h1 className="admin-title">
+        Painel Admin
+      </h1>
 
       <div className="admin-box">
         <input
@@ -102,19 +106,36 @@ function Admin() {
         <button onClick={adicionarAluno}>
           Adicionar aluno
         </button>
+
+        <button
+          className="voltar-btn"
+          onClick={() =>
+            (window.location.href = "/")
+          }
+        >
+          Voltar para página inicial
+        </button>
       </div>
 
       <div className="lista">
         {alunos.map((aluno) => (
-          <div className="aluno-card" key={aluno.id}>
+          <div
+            className="aluno-card"
+            key={aluno.id}
+          >
             <div>
               <strong>{aluno.nome}</strong>
-              <p>RM: {aluno.rm}</p>
+
+              <p>
+                RM: {aluno.rm}
+              </p>
             </div>
 
             <button
               className="btn-delete"
-              onClick={() => excluirAluno(aluno.id)}
+              onClick={() =>
+                excluirAluno(aluno.id)
+              }
             >
               Excluir
             </button>
