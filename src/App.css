@@ -77,3 +77,58 @@ body {
   color: #c7d8ff;
   font-size: 18px;
 }
+@media (max-width: 768px) {
+
+  .home,
+  .admin-page {
+    padding: 20px;
+  }
+
+  .topo {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .topo h1,
+  .admin-title {
+    font-size: 32px;
+  }
+
+  .pesquisa {
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  .btn-admin {
+    width: 100%;
+    text-align: center;
+  }
+
+  .admin-box,
+  .login-box {
+    width: 100%;
+  }
+
+  .aluno-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .btn-delete {
+    width: 100%;
+  }
+
+  .aluno-box h2 {
+    font-size: 22px;
+  }
+
+  .aluno-box p {
+    font-size: 16px;
+  }
+
+  .login-box h1 {
+    font-size: 28px;
+  }
+}
